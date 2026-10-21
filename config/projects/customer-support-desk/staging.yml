@@ -1,0 +1,56 @@
+name: staging
+
+aws:
+  region: ap-southeast-4
+  registry: 974558088242.dkr.ecr.ap-southeast-4.amazonaws.com
+
+docker:
+  network: csd-staging-net
+
+services:
+  passthru:
+    container: csd-staging-passthru
+    image: staging-supportdesk-passthru-registry
+    tag: latest
+
+  core:
+    container: csd-staging-core
+    image: staging-supportdesk-core-registry
+    tag: latest
+
+    storage:
+      - csd-staging-core-storage:/var/www/html/storage
+
+    environment:
+      PASSPORT_PASSWORD_CLIENT_ID: ${STAGING_PASSPORT_PASSWORD_CLIENT_ID}
+      PASSPORT_PASSWORD_CLIENT_SECRET: ${STAGING_PASSPORT_PASSWORD_CLIENT_SECRET}
+
+  notification:
+    container: csd-staging-notification
+    image: staging-supportdesk-notification-registry
+    tag: latest
+
+  broadcast:
+    container: csd-staging-broadcast
+    image: staging-supportdesk-broadcast-registry
+    tag: latest
+
+  reverb:
+    container: csd-staging-reverb
+    image: staging-supportdesk-reverb-registry
+    tag: latest
+
+  cron:
+    container: csd-staging-cron
+    image: staging-supportdesk-cron-registry
+    tag: latest
+
+  report:
+    container: csd-staging-report
+    image: staging-supportdesk-report-registry
+    tag: latest
+
+  web:
+    container: csd-staging-web
+    image: staging-supportdesk-frontend-registry
+    tag: latest

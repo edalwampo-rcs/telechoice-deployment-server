@@ -1,0 +1,99 @@
+name: development
+
+aws:
+  region: ap-southeast-4
+  registry: 974558088242.dkr.ecr.ap-southeast-4.amazonaws.com
+
+docker:
+  network: csd-net
+
+services:
+  passthru:
+    container: csd-passthru
+    image: dev-supportdesk-2-passthru-registry
+    tag: latest
+
+    environment:
+      APP_URL: ${CSD_APP_URL}
+
+  core:
+    container: csd-core
+    image: dev-supportdesk-3-core-registry
+    tag: latest
+
+    storage:
+      - csd-core-storage:/var/www/html/storage
+
+    environment:
+      APP_URL: ${CSD_APP_URL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PASSPORT_PASSWORD_CLIENT_ID: ${CSD_PASSPORT_PASSWORD_CLIENT_ID}
+      PASSPORT_PASSWORD_CLIENT_SECRET: ${CSD_PASSPORT_PASSWORD_CLIENT_SECRET}
+
+  notification:
+    container: csd-notification
+    image: dev-supportdesk-4-notification-registry
+    tag: latest
+
+    environment:
+      APP_URL: ${CSD_APP_URL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+  broadcast:
+    container: csd-broadcast
+    image: dev-supportdesk-7-broadcast-registry
+    tag: latest
+
+    environment:
+      APP_URL: ${CSD_APP_URL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+  reverb:
+    container: csd-reverb
+    image: dev-supportdesk-8-reverb-registry
+    tag: latest
+
+    environment:
+      APP_URL: ${CSD_APP_URL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+  cron:
+    container: csd-cron
+    image: dev-supportdesk-5-cron-registry
+    tag: latest
+
+    environment:
+      APP_URL: ${CSD_APP_URL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+  report:
+    container: csd-report
+    image: dev-supportdesk-6-report-registry
+    tag: latest
+
+    environment:
+      APP_URL: ${CSD_APP_URL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+  web:
+    container: csd-web
+    image: dev-supportdesk-1-frontend-registry
+    tag: latest

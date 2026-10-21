@@ -1,0 +1,49 @@
+name: development
+
+aws:
+  region: ap-southeast-4
+  registry: 974558088242.dkr.ecr.ap-southeast-4.amazonaws.com
+
+docker:
+  network: consumer-net
+
+services:
+
+  consumer-web:
+    container: csd-web
+    image: dev-consumer-app-web-registry
+    tag: latest
+
+  dealer-web:
+    container: csd-web
+    image: dev-consumer-app-web-registry
+    tag: latest
+    
+  shared-passthru:
+    container: consumer-shared-passthru
+    image: dev-consumer-app-shared-passthru-registry
+    tag: latest
+    
+    environment:
+      APP_URL: ${CONSUMER_APP_URL}
+
+  consumer-core:
+    container: consumer-core
+    image: dev-consumer-app-core-registry
+    tag: latest
+
+    storage:
+      - consumer-core-storage:/var/www/html/storage
+
+    environment:
+      APP_URL: ${CONSUMER_APP_URL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PASSPORT_PUBLIC_KEY: ${CONSUMER_PASSPORT_PUBLIC_KEY}
+      PASSPORT_PRIVATE_KEY: ${CONSUMER_PASSPORT_PRIVATE_KEY}
+      PASSPORT_PERSONAL_CLIENT_ID: ${CONSUMER_PASSPORT_PERSONAL_CLIENT_ID}
+      PASSPORT_PERSONAL_CLIENT_SECRET: ${CONSUMER_PASSPORT_PERSONAL_CLIENT_SECRET}
+      PASSPORT_PASSWORD_CLIENT_ID: ${CONSUMER_PASSPORT_PASSWORD_CLIENT_ID}
+      PASSPORT_PASSWORD_CLIENT_SECRET: ${CONSUMER_PASSPORT_PASSWORD_CLIENT_SECRET}

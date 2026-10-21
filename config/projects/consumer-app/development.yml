@@ -10,13 +10,18 @@ docker:
 services:
 
   consumer-web:
-    container: csd-web
+    container: consumer-web
     image: dev-consumer-app-web-registry
     tag: latest
 
   dealer-web:
-    container: csd-web
-    image: dev-consumer-app-web-registry
+    container: dealer-web
+    image: dev-dealer-app-web-registry
+    tag: latest
+
+  multiservice-web:
+    container: multiservice-web
+    image: dev-multiservice-app-web-registry
     tag: latest
     
   shared-passthru:
@@ -34,6 +39,27 @@ services:
 
     storage:
       - consumer-core-storage:/var/www/html/storage
+
+    environment:
+      APP_URL: ${CONSUMER_APP_URL}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PASSPORT_PUBLIC_KEY: ${CONSUMER_PASSPORT_PUBLIC_KEY}
+      PASSPORT_PRIVATE_KEY: ${CONSUMER_PASSPORT_PRIVATE_KEY}
+      PASSPORT_PERSONAL_CLIENT_ID: ${CONSUMER_PASSPORT_PERSONAL_CLIENT_ID}
+      PASSPORT_PERSONAL_CLIENT_SECRET: ${CONSUMER_PASSPORT_PERSONAL_CLIENT_SECRET}
+      PASSPORT_PASSWORD_CLIENT_ID: ${CONSUMER_PASSPORT_PASSWORD_CLIENT_ID}
+      PASSPORT_PASSWORD_CLIENT_SECRET: ${CONSUMER_PASSPORT_PASSWORD_CLIENT_SECRET}
+
+  dealer-core:
+    container: dealer-core
+    image: dev-dealer-app-core-registry
+    tag: latest
+
+    storage:
+      - dealer-core-storage:/var/www/html/storage
 
     environment:
       APP_URL: ${CONSUMER_APP_URL}
